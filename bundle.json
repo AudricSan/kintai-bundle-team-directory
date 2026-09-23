@@ -1,7 +1,7 @@
 {
     "slug": "team-directory",
     "name": "Annuaire des collègues",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Annuaire des collègues scopé aux magasins partagés, avec profil étendu consultable (bio, compétences, langues, loisirs).",
     "author": { "name": "AudricSan", "url": "https://github.com/AudricSan" },
     "kintai_core": { "min": "0.1.0", "max": "999.999.999" },
