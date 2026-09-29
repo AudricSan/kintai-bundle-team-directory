@@ -11,6 +11,7 @@ Le schéma de version (X.Y.Z, canaux alpha/beta/main) est décrit dans
 ### Changed
 
 - Aucun changement fonctionnel — bump de version pour aligner ce bundle sur la ligne 1.1.0 commune à tous les bundles officiels.
+- Le CSS de l'annuaire (`.team-directory-grid`/`.team-card*`/`.team-profile-*`) vivait dans Kintai Core (`public/assets/css/src/components/team-directory.css`), pas dans ce dépôt. Il vit maintenant dans `public/css/team-directory.css`, fourni par le bundle lui-même via `Bundle::loadAssetsFrom()`/`bundle_asset()`. **Nécessite** `kintai_core.min: "0.2.0"`.
 
 ## [1.0.0] - 2026-09-19
 

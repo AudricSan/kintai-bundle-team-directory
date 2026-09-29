@@ -32,5 +32,6 @@ final class TeamDirectoryBundle extends Bundle
     {
         $this->loadViewsFrom($this->getPath() . '/Views', 'team-directory');
         $this->loadRoutesFrom($this->getPath() . '/routes.php');
+        $this->loadAssetsFrom('public');
     }
 }
