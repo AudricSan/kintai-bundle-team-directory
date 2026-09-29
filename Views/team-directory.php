@@ -6,6 +6,10 @@ use kintai\UI\Components\EmptyState;
  * @var array $stores_map  store_id => nom
  */
 ?>
+<?php if ($teamDirectoryCss = bundle_asset('team-directory', 'css/team-directory.css')): ?>
+<link rel="stylesheet" href="<?= $teamDirectoryCss ?>">
+<?php endif; ?>
+
 <div class="page-header">
     <h2 class="page-header__title"><?= __('team_directory') ?></h2>
 </div>

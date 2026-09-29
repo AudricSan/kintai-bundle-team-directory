@@ -12,6 +12,10 @@ $initials = htmlspecialchars(strtoupper(
 ) ?: '··');
 $storeNames = array_map(fn($sid) => $stores_map[$sid] ?? ('#' . $sid), $store_ids);
 ?>
+<?php if ($teamDirectoryCss = bundle_asset('team-directory', 'css/team-directory.css')): ?>
+<link rel="stylesheet" href="<?= $teamDirectoryCss ?>">
+<?php endif; ?>
+
 <div class="page-header">
     <h2 class="page-header__title"><?= htmlspecialchars($name) ?></h2>
     <div class="page-header__actions">
