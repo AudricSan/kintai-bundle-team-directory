@@ -1,5 +1,5 @@
 <?php
-use kintai\UI\Components\Card;
+use kintai\Contract\View\Components\Card;
 
 /**
  * @var array $colleague   Utilisateur consulté

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use kintai\Core\Middleware\AuthMiddleware;
+use kintai\Contract\Http\Middleware\AuthMiddleware;
 use kintai\Bundles\Installed\TeamDirectory\Controllers\Web\TeamDirectoryController;
 
-/** @var kintai\Core\Router $router */
-/** @var kintai\Core\Container $container */
+/** @var kintai\Contract\Http\Router $router */
+/** @var kintai\Contract\Container $container */
 
 // =============================================================================
 // Team Directory — Routes Web (tout utilisateur connecté, pas de RBAC :

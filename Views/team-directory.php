@@ -1,5 +1,5 @@
 <?php
-use kintai\UI\Components\EmptyState;
+use kintai\Contract\View\Components\EmptyState;
 
 /**
  * @var array $colleagues  Liste de ['user' => array, 'store_ids' => int[]]
