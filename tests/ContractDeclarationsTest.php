@@ -4,103 +4,80 @@ declare(strict_types=1);
 
 namespace kintai\Tests\Bundles\TeamDirectory;
 
-use kintai\Contract\Extension\Action;
 use kintai\Contract\Extension\NavItem;
-use kintai\Core\Auth\PermissionCatalog;
-use kintai\Core\Container;
-use kintai\Core\Extension\Actions;
-use kintai\Core\Extension\Legacy\LegacyPendingRequests;
-use kintai\Core\Extension\Navigation;
-use kintai\Core\Extension\ProfileSections;
-use kintai\Core\Extension\StoreFeatures;
+use kintai\Contract\Extension\ProfileSection;
 use kintai\Bundles\Installed\TeamDirectory\TeamDirectoryBundle;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Les déclarations du bundle (contrat 1.11) reproduisent exactement ce que le Core affichait pour lui en repli : les
- * déclarer ne change rien à l'écran. Quand le repli du Core disparaîtra (étape 5 du plan du contrat), ce test pourra
- * être retiré.
+ * Ce que le bundle déclare au Core (contrat 1.12). Le Core n'a plus de repli pour team-directory (étape 4 du plan du
+ * contrat, extraction) : ces déclarations sont la seule source de son entrée de menu et de sa section de profil, d'où
+ * des valeurs vérifiées une à une plutôt qu'une comparaison avec l'ancien repli du Core.
  */
 final class ContractDeclarationsTest extends TestCase
 {
-    private const SLUG = 'team-directory';
-
     private function bundle(): TeamDirectoryBundle
     {
         return (new \ReflectionClass(TeamDirectoryBundle::class))->newInstanceWithoutConstructor();
     }
 
-    /** @param list<NavItem> $items */
-    private static function navShape(array $items): array
+    public function testNavigationDeclaresTheDirectoryEntry(): void
     {
-        return array_map(static function (NavItem $i): array {
-            $v = get_object_vars($i);
-            $v['links'] = $v['links'] !== null;
-            return $v;
-        }, $items);
+        $items = $this->bundle()->navigation();
+
+        $this->assertCount(1, $items);
+        $this->assertInstanceOf(NavItem::class, $items[0]);
+        $this->assertSame('team_directory', $items[0]->key);
+        $this->assertSame(NavItem::MAIN, $items[0]->section);
+        $this->assertSame('team_directory', $items[0]->label);
+        $this->assertSame('team.index', $items[0]->managerRoute);
+        $this->assertSame('team.index', $items[0]->employeeRoute);
+        $this->assertSame('users', $items[0]->icon);
+        $this->assertSame(['/team'], $items[0]->activePaths);
+        $this->assertNull($items[0]->storeFeature, 'annuaire ouvert dans tous les magasins');
+        $this->assertSame(10, $items[0]->order);
+        $this->assertFalse($items[0]->mobile);
     }
 
-    /** @param list<Action> $actions */
-    private static function actionShape(array $actions): array
+    public function testProfileSectionDeclaresTheDirectoryCheckboxes(): void
     {
-        $context = ['user_id' => 3, 'store_id' => 5, 'store_name' => 'S', 'period' => 30];
-        return array_map(static function (Action $a) use ($context): array {
-            $v = get_object_vars($a);
-            try {
-                $v['url'] = ($a->url)($context);
-            } catch (\Throwable $e) {
-                $v['url'] = $e::class;
-            }
-            return $v;
-        }, $actions);
-    }
+        $sections = $this->bundle()->profileSections();
 
-    public function testNavigationMatchesTheCoreFallback(): void
-    {
-        $this->assertEquals(self::navShape(Navigation::legacyBundleItems()[self::SLUG] ?? []), self::navShape($this->bundle()->navigation()));
-    }
-
-    public function testPermissionsMatchTheCoreFallback(): void
-    {
-        $expected = array_intersect_key(PermissionCatalog::CATEGORIES, array_flip(array_keys(PermissionCatalog::CATEGORY_BUNDLES, self::SLUG, true)));
-        $this->assertSame($expected, $this->bundle()->permissions());
-    }
-
-    public function testStoreFeaturesMatchTheCoreFallback(): void
-    {
-        $this->assertEquals(StoreFeatures::legacyBundleFeatures()[self::SLUG] ?? [], $this->bundle()->storeFeatures());
-    }
-
-    public function testActionsMatchTheCoreFallback(): void
-    {
-        $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $this->assertEquals(self::actionShape(Actions::legacyBundleActions()[self::SLUG] ?? []), self::actionShape($this->bundle()->actions()));
-    }
-
-    public function testPendingRequestsProvidersMatchTheCoreFallback(): void
-    {
-        $legacy = LegacyPendingRequests::forBundles(Container::getInstance())[self::SLUG] ?? null;
-        $declared = $this->bundle()->pendingRequestsProviders();
-
-        if ($legacy === null) {
-            $this->assertSame([], $declared);
-            return;
-        }
-        $this->assertCount(1, $declared);
-        foreach (['key', 'label', 'emptyLabel', 'permission', 'storeFeature', 'order'] as $method) {
-            $this->assertSame($legacy->{$method}(), $declared[0]->{$method}(), $method);
-        }
-    }
-
-    /** Même section que le repli du Core (clé, cases, ordre) ; seule la vue change : celle du bundle. */
-    public function testProfileSectionsMatchTheCoreFallback(): void
-    {
-        $shape = static fn(array $sections): array => array_map(
-            static fn($s): array => ['key' => $s->key, 'flags' => $s->flags, 'order' => $s->order],
-            $sections
-        );
-        $this->assertSame($shape(ProfileSections::legacyBundleSections()[self::SLUG] ?? []), $shape($this->bundle()->profileSections()));
-        $this->assertSame('team-directory::profile-section', $this->bundle()->profileSections()[0]->view);
+        $this->assertCount(1, $sections);
+        $this->assertInstanceOf(ProfileSection::class, $sections[0]);
+        $this->assertSame('directory', $sections[0]->key);
+        $this->assertSame('team-directory::profile-section', $sections[0]->view);
+        $this->assertSame(['show_in_directory', 'share_email', 'share_phone', 'share_mobile_phone'], $sections[0]->flags);
+        $this->assertSame(10, $sections[0]->order);
         $this->assertFileExists(dirname(__DIR__) . '/Views/profile-section.php');
+    }
+
+    /** Le bundle n'apporte rien d'autre au Core. */
+    public function testNoOtherContribution(): void
+    {
+        $bundle = $this->bundle();
+
+        $this->assertSame([], $bundle->permissions());
+        $this->assertSame([], $bundle->storeFeatures());
+        $this->assertSame([], $bundle->dashboardWidgets());
+        $this->assertSame([], $bundle->viewVariables());
+        $this->assertSame([], $bundle->actions());
+        $this->assertSame([], $bundle->notificationTypes());
+        $this->assertSame([], $bundle->cronJobs());
+        $this->assertSame([], $bundle->pendingRequestsProviders());
+        $this->assertSame([], $bundle->absenceProviders());
+        $this->assertSame([], $bundle->attendanceProviders());
+    }
+
+    /** Les libellés utilisés par l'entrée de menu et la section de profil sont traduits par le bundle. */
+    public function testDeclaredLabelsAreTranslatedByTheBundle(): void
+    {
+        $keys = ['team_directory', 'show_in_directory', 'show_in_directory_hint', 'share_contact_info', 'share_contact_info_hint'];
+        foreach (['fr', 'en', 'ja'] as $locale) {
+            $lang = json_decode((string) file_get_contents(dirname(__DIR__) . "/lang/{$locale}.json"), true);
+            foreach ($keys as $key) {
+                $this->assertNotEmpty($lang[$key] ?? null, "{$locale} : {$key}");
+            }
+        }
     }
 }

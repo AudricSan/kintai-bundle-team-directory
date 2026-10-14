@@ -10,6 +10,7 @@ Le schéma de version (X.Y.Z, canaux alpha/beta/main) est décrit dans
 
 ### Changed
 
+- `ContractDeclarationsTest` vérifie désormais les déclarations du bundle (entrée de menu, section de profil, aucune autre contribution, libellés traduits par le bundle) valeur par valeur, au lieu de les comparer au repli du Core pour team-directory, qui disparaît avec l'extraction (étape 4 du plan du contrat). Aucun changement fonctionnel.
 - Contrat de bundle versionné : le bundle n'utilise plus que les noms du contrat `kintai\Contract\…` du Core (requête, réponse, routes, middlewares, exceptions, droits, données du Core, services, vues et composants) et déclare `"kintai_contract": "^1.0"` dans `bundle.json` (`kintai_core.min` relevé à `0.3.6`, première version du Core qui fournit le contrat). Nouveau test `ContractUsageTest` : toute utilisation du Core hors contrat échoue, hormis 0 classe(s) propre(s) au bundle qui vivent encore dans le Core (extraction prévue).
 
 ### Added
