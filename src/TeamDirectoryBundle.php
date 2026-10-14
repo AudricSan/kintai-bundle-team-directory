@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace kintai\Bundles\Installed\TeamDirectory;
 
 use kintai\Contract\Bundle;
+use kintai\Contract\Extension\NavItem;
 
 final class TeamDirectoryBundle extends Bundle
 {
@@ -33,5 +34,16 @@ final class TeamDirectoryBundle extends Bundle
         $this->loadViewsFrom($this->getPath() . '/Views', 'team-directory');
         $this->loadRoutesFrom($this->getPath() . '/routes.php');
         $this->loadAssetsFrom('public');
+    }
+
+    /**
+     * Navigation (contrat 1.1) : entrée(s) de la barre du haut et de la barre mobile.
+     */
+    public function navigation(): array
+    {
+        return [
+            new NavItem('team_directory', NavItem::MAIN, 'team_directory', 'team.index', 'team.index',
+                icon: 'users', activePaths: ['/team'], order: 10),
+        ];
     }
 }
