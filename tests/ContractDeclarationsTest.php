@@ -11,6 +11,7 @@ use kintai\Core\Container;
 use kintai\Core\Extension\Actions;
 use kintai\Core\Extension\Legacy\LegacyPendingRequests;
 use kintai\Core\Extension\Navigation;
+use kintai\Core\Extension\ProfileSections;
 use kintai\Core\Extension\StoreFeatures;
 use kintai\Bundles\Installed\TeamDirectory\TeamDirectoryBundle;
 use PHPUnit\Framework\TestCase;
@@ -89,5 +90,17 @@ final class ContractDeclarationsTest extends TestCase
         foreach (['key', 'label', 'emptyLabel', 'permission', 'storeFeature', 'order'] as $method) {
             $this->assertSame($legacy->{$method}(), $declared[0]->{$method}(), $method);
         }
+    }
+
+    /** Même section que le repli du Core (clé, cases, ordre) ; seule la vue change : celle du bundle. */
+    public function testProfileSectionsMatchTheCoreFallback(): void
+    {
+        $shape = static fn(array $sections): array => array_map(
+            static fn($s): array => ['key' => $s->key, 'flags' => $s->flags, 'order' => $s->order],
+            $sections
+        );
+        $this->assertSame($shape(ProfileSections::legacyBundleSections()[self::SLUG] ?? []), $shape($this->bundle()->profileSections()));
+        $this->assertSame('team-directory::profile-section', $this->bundle()->profileSections()[0]->view);
+        $this->assertFileExists(dirname(__DIR__) . '/Views/profile-section.php');
     }
 }
