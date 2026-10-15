@@ -38,7 +38,7 @@ final class TeamDirectoryControllerTest extends TestCase
         $view = new ViewRenderer(sys_get_temp_dir());
         $view->addNamespace('team-directory', $viewDir);
 
-        $this->users = $this->createMock(UserRepositoryInterface::class);
+        $this->users = $this->createStub(UserRepositoryInterface::class);
         $this->users->method('findById')->willReturnMap([
             [self::ME, ['id' => self::ME, 'first_name' => 'A', 'last_name' => 'Moi', 'is_active' => 1, 'show_in_directory' => 1]],
             [self::COLLEAGUE_VISIBLE, ['id' => self::COLLEAGUE_VISIBLE, 'first_name' => 'B', 'last_name' => 'Visible', 'is_active' => 1, 'show_in_directory' => 1]],
@@ -47,7 +47,7 @@ final class TeamDirectoryControllerTest extends TestCase
             [self::OTHER_STORE_USER, ['id' => self::OTHER_STORE_USER, 'first_name' => 'E', 'last_name' => 'Ailleurs', 'is_active' => 1, 'show_in_directory' => 1]],
         ]);
 
-        $this->storeUsers = $this->createMock(StoreUserRepositoryInterface::class);
+        $this->storeUsers = $this->createStub(StoreUserRepositoryInterface::class);
         $this->storeUsers->method('findByUser')->willReturnMap([
             [self::ME, [['store_id' => 10]]],
             [self::COLLEAGUE_VISIBLE, [['store_id' => 10]]],
@@ -67,7 +67,7 @@ final class TeamDirectoryControllerTest extends TestCase
             ]],
         ]);
 
-        $this->stores = $this->createMock(StoreRepositoryInterface::class);
+        $this->stores = $this->createStub(StoreRepositoryInterface::class);
         $this->stores->method('findAll')->willReturn([
             ['id' => 10, 'name' => 'Store A'],
             ['id' => 20, 'name' => 'Store B'],
