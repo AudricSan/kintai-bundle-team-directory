@@ -8,6 +8,10 @@ Le schéma de version (X.Y.Z, canaux alpha/beta/main) est décrit dans
 
 ## [Unreleased]
 
+### Fixed
+
+- Description de `bundle.json` alignée sur celle de `lang/fr.json`, pour que le catalogue et la page Bundles affichent le même texte.
+
 ### Changed
 
 - `ContractDeclarationsTest` vérifie désormais les déclarations du bundle (entrée de menu, section de profil, aucune autre contribution, libellés traduits par le bundle) valeur par valeur, au lieu de les comparer au repli du Core pour team-directory, qui disparaît avec l'extraction (étape 4 du plan du contrat). Aucun changement fonctionnel.

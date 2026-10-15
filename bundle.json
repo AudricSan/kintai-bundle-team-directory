@@ -2,7 +2,7 @@
     "slug": "team-directory",
     "name": "Annuaire des collègues",
     "version": "1.2.0",
-    "description": "Annuaire des collègues scopé aux magasins partagés, avec profil étendu consultable (bio, compétences, langues, loisirs).",
+    "description": "Profil enrichi (photo, bio, compétences, langues parlées, loisirs) et annuaire des collègues par store.",
     "author": {
         "name": "AudricSan",
         "url": "https://github.com/AudricSan"
