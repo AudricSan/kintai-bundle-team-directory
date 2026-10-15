@@ -30,7 +30,7 @@ ob_start();
     <?php if (!empty($colleague['avatar_path'])): ?>
         <img src="<?= route_url('user.avatar', ['user_id' => (int) $colleague['id']]) ?>" alt="" class="team-profile-avatar">
     <?php else: ?>
-        <span class="avatar-chip team-profile-avatar team-profile-avatar--fallback" style="--chip-bg:<?= htmlspecialchars($colleague['color'] ?? '#3B82F6') ?>"><?= $initials ?></span>
+        <span class="avatar-chip team-profile-avatar team-profile-avatar--fallback <?= style_class(['--chip-bg' => $colleague['color'] ?? '#3B82F6']) ?>"><?= $initials ?></span>
     <?php endif; ?>
     <div>
         <div class="team-profile-name"><?= htmlspecialchars($name) ?></div>
