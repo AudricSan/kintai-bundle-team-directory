@@ -8,6 +8,21 @@ Le schéma de version (X.Y.Z, canaux alpha/beta/main) est décrit dans
 
 ## [Unreleased]
 
+### Fixed
+
+- Description de `bundle.json` alignée sur celle de `lang/fr.json`, pour que le catalogue et la page Bundles affichent le même texte.
+
+### Changed
+
+- `ContractDeclarationsTest` vérifie désormais les déclarations du bundle (entrée de menu, section de profil, aucune autre contribution, libellés traduits par le bundle) valeur par valeur, au lieu de les comparer au repli du Core pour team-directory, qui disparaît avec l'extraction (étape 4 du plan du contrat). Aucun changement fonctionnel.
+- Contrat de bundle versionné : le bundle n'utilise plus que les noms du contrat `kintai\Contract\…` du Core (requête, réponse, routes, middlewares, exceptions, droits, données du Core, services, vues et composants) et déclare `"kintai_contract": "^1.0"` dans `bundle.json` (`kintai_core.min` relevé à `0.3.6`, première version du Core qui fournit le contrat). Nouveau test `ContractUsageTest` : toute utilisation du Core hors contrat échoue, hormis 0 classe(s) propre(s) au bundle qui vivent encore dans le Core (extraction prévue).
+
+### Added
+
+- Contrat de bundle 1.12 : la section « annuaire » du profil (apparaître dans l'annuaire, partager e-mail, téléphone, mobile) est désormais fournie par le bundle (`profileSections()`, vue `Views/profile-section.php`, traductions dans `lang/`) au lieu d'être codée dans le Core ; même rendu, mêmes cases enregistrées. `bundle.json` demande `"kintai_contract": "^1.12"`.
+- Contrat de bundle 1.11 : le bundle déclare lui-même ce qu'il apporte au Core (`navigation()`) au lieu que le Core le connaisse à l'avance ; déclarations identiques à ce que le Core affichait pour ce bundle, rien ne change à l'écran. `bundle.json` demande désormais `"kintai_contract": "^1.11"` (Kintai Core avec les points d'extension et fournisseurs du contrat). Nouveau test `ContractDeclarationsTest` : chaque déclaration est comparée au repli historique du Core.
+- Socle de tests PHPUnit (composer.json, phpunit.xml) et CI qui l'exécute contre le vrai Core : les tests que le Core faisait tourner sur une copie figée du bundle (fixtures 1.0.0) vivent désormais ici et testent le code réel.
+
 ### Changed
 
 - Garde-fou contre les handlers inline, en prévision de la Content-Security-Policy stricte de Kintai Core 0.3.0 (`script-src 'self' 'nonce-…'`, sans `'unsafe-inline'`) : `tests.yml` échoue désormais si un attribut `onclick=`/`onchange=`/`onsubmit=`/`oninput=`, un lien `javascript:` ou un `<script>` sans nonce apparaît dans `Views/` ou `src/` — le navigateur les bloquerait en silence, sans aucune erreur côté serveur. **Aucun changement fonctionnel** : les vues de ce bundle n'utilisent déjà aucun handler inline ni `<script>` inline exécutable. La règle est documentée dans `CONTRIBUTING.md` et `CLAUDE.md`.

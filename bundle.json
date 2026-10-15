@@ -1,10 +1,17 @@
 {
     "slug": "team-directory",
     "name": "Annuaire des collègues",
-    "version": "1.1.0",
-    "description": "Annuaire des collègues scopé aux magasins partagés, avec profil étendu consultable (bio, compétences, langues, loisirs).",
-    "author": { "name": "AudricSan", "url": "https://github.com/AudricSan" },
-    "kintai_core": { "min": "0.2.0", "max": "999.999.999" },
+    "version": "1.2.0",
+    "description": "Profil enrichi (photo, bio, compétences, langues parlées, loisirs) et annuaire des collègues par store.",
+    "author": {
+        "name": "AudricSan",
+        "url": "https://github.com/AudricSan"
+    },
+    "kintai_contract": "^1.12",
+    "kintai_core": {
+        "min": "0.3.6",
+        "max": "999.999.999"
+    },
     "requires_bundles": {},
     "namespace": "kintai\\Bundles\\Installed\\TeamDirectory",
     "entry_class": "kintai\\Bundles\\Installed\\TeamDirectory\\TeamDirectoryBundle",
