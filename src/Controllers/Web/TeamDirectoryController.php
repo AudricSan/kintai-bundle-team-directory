@@ -88,7 +88,7 @@ final class TeamDirectoryController
         if (!$isSelf && !$isOwner) {
             $shared = array_intersect($this->storeIdsFor($userId), $this->storeIdsFor($targetId));
             if ($shared === []) {
-                throw new ForbiddenException(__('error_not_colleague'));
+                throw new ForbiddenException(__('team_directory_error_not_colleague'));
             }
         }
         if (!$isSelf && (int) ($target['show_in_directory'] ?? 1) === 0) {

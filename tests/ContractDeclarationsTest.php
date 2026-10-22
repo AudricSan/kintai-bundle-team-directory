@@ -72,7 +72,7 @@ final class ContractDeclarationsTest extends TestCase
     /** Les libellés utilisés par l'entrée de menu et la section de profil sont traduits par le bundle. */
     public function testDeclaredLabelsAreTranslatedByTheBundle(): void
     {
-        $keys = ['team_directory', 'show_in_directory', 'show_in_directory_hint', 'share_contact_info', 'share_contact_info_hint'];
+        $keys = ['team_directory', 'team_directory_show_in_directory', 'team_directory_show_in_directory_hint', 'team_directory_share_contact_info', 'team_directory_share_contact_info_hint'];
         foreach (['fr', 'en', 'ja'] as $locale) {
             $lang = json_decode((string) file_get_contents(dirname(__DIR__) . "/lang/{$locale}.json"), true);
             foreach ($keys as $key) {
