@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace kintai\Bundles\Installed\TeamDirectory\Controllers\Web;
 
-use kintai\Core\Exceptions\ForbiddenException;
-use kintai\Core\Exceptions\NotFoundException;
-use kintai\Core\Repositories\StoreRepositoryInterface;
-use kintai\Core\Repositories\StoreUserRepositoryInterface;
-use kintai\Core\Repositories\UserRepositoryInterface;
-use kintai\Core\Request;
-use kintai\Core\Response;
-use kintai\UI\ViewRenderer;
+use kintai\Contract\Exceptions\ForbiddenException;
+use kintai\Contract\Exceptions\NotFoundException;
+use kintai\Contract\Data\StoreRepositoryInterface;
+use kintai\Contract\Data\StoreUserRepositoryInterface;
+use kintai\Contract\Data\UserRepositoryInterface;
+use kintai\Contract\Http\Request;
+use kintai\Contract\Http\Response;
+use kintai\Contract\View\ViewRenderer;
 
 /**
  * Annuaire des collègues : chaque employé peut consulter le profil enrichi
@@ -88,7 +88,7 @@ final class TeamDirectoryController
         if (!$isSelf && !$isOwner) {
             $shared = array_intersect($this->storeIdsFor($userId), $this->storeIdsFor($targetId));
             if ($shared === []) {
-                throw new ForbiddenException(__('error_not_colleague'));
+                throw new ForbiddenException(__('team_directory_error_not_colleague'));
             }
         }
         if (!$isSelf && (int) ($target['show_in_directory'] ?? 1) === 0) {

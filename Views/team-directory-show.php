@@ -1,5 +1,5 @@
 <?php
-use kintai\UI\Components\Card;
+use kintai\Contract\View\Components\Card;
 
 /**
  * @var array $colleague   Utilisateur consulté
@@ -12,6 +12,10 @@ $initials = htmlspecialchars(strtoupper(
 ) ?: '··');
 $storeNames = array_map(fn($sid) => $stores_map[$sid] ?? ('#' . $sid), $store_ids);
 ?>
+<?php if ($teamDirectoryCss = bundle_asset('team-directory', 'css/team-directory.css')): ?>
+<link rel="stylesheet" href="<?= $teamDirectoryCss ?>">
+<?php endif; ?>
+
 <div class="page-header">
     <h2 class="page-header__title"><?= htmlspecialchars($name) ?></h2>
     <div class="page-header__actions">
@@ -26,7 +30,7 @@ ob_start();
     <?php if (!empty($colleague['avatar_path'])): ?>
         <img src="<?= route_url('user.avatar', ['user_id' => (int) $colleague['id']]) ?>" alt="" class="team-profile-avatar">
     <?php else: ?>
-        <span class="avatar-chip team-profile-avatar team-profile-avatar--fallback" style="--chip-bg:<?= htmlspecialchars($colleague['color'] ?? '#3B82F6') ?>"><?= $initials ?></span>
+        <span class="avatar-chip team-profile-avatar team-profile-avatar--fallback <?= style_class(['--chip-bg' => $colleague['color'] ?? '#3B82F6']) ?>"><?= $initials ?></span>
     <?php endif; ?>
     <div>
         <div class="team-profile-name"><?= htmlspecialchars($name) ?></div>
