@@ -1,7 +1,7 @@
 {
     "slug": "team-directory",
     "name": "Annuaire des collègues",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "description": "Profil enrichi (photo, bio, compétences, langues parlées, loisirs) et annuaire des collègues par store.",
     "author": {
         "name": "AudricSan",
